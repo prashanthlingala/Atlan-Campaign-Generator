@@ -2,6 +2,7 @@ import streamlit as st
 from content_generator import generate_content
 from campaign_scheduler import create_campaign_schedule
 from analytics import mock_engagement_metrics
+from integrations import push_to_hubspot, post_to_twitter, post_to_linkedin
 import matplotlib.pyplot as plt
 
 # Predefined Personas
@@ -85,7 +86,6 @@ if st.button("Schedule Campaign"):
         st.dataframe(schedule)
 
 # Step 5: Analytics Dashboard
-# Step 5: Analytics Dashboard
 if st.button("Show Analytics"):
     if not channels:
         st.error("Please select at least one channel to view analytics.")
@@ -111,3 +111,23 @@ if st.button("Show Analytics"):
 
         # Add a note to explain ROI or other terms if needed
         st.write("_Note: ROI (Return on Investment) is a ratio of revenue generated to campaign cost._")
+
+# Step 6: Push content to Platforms
+if st.button("Push Content to Platforms"):
+    for channel in channels:
+        content = generate_content(channel, campaign_goal, persona_details["message"], persona_details["tone"])
+        st.write(f"Generated Content for {channel}: {content}")
+
+        # Push content to respective platforms
+        if channel == "Email":
+            result = push_to_hubspot("Campaign Subject", content, ["recipient@example.com"])
+        elif channel == "Twitter":
+            result = post_to_twitter(content)
+        elif channel == "LinkedIn":
+            result = post_to_linkedin(content)
+        else:
+            result = f"No integration for {channel} yet."
+
+        st.write(f"Result for {channel}: {result}")
+
+
