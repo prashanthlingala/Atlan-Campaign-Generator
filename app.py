@@ -90,36 +90,24 @@ if st.button("Show Analytics"):
     if not channels:
         st.error("Please select at least one channel to view analytics.")
     else:
-        st.write("### Engagement Metrics")
-
+        st.write("### Campaign Performance")
+        
         # Get mock analytics data
         engagement_metrics = mock_engagement_metrics(channels)
-
-        # Create a table of metrics
-        st.write("#### Metrics Table")
+        
+        # Display metrics as cards for each channel
         for channel, metrics in engagement_metrics.items():
             st.subheader(f"{channel.capitalize()} Metrics")
-            st.write(f"- **Total Impressions:** {metrics['Impressions']}")
-            st.write(f"- **Click-Through Rate (CTR):** {metrics['CTR (%)']}%")
-            st.write(f"- **Clicks:** {metrics['Clicks']}")
-            st.write(f"- **Conversions:** {metrics['Conversions']}")
-            st.write(f"- **Return on Investment (ROI):** {metrics['ROI (x)']}x")
+            col1, col2, col3, col4 = st.columns(4)
 
-        # Display Bar Chart for Impressions
-        st.write("#### Impressions by Channel")
-        impressions = {channel: metrics["Impressions"] for channel, metrics in engagement_metrics.items()}
-        plt.bar(impressions.keys(), impressions.values())
-        plt.title("Impressions by Channel")
-        plt.xlabel("Channel")
-        plt.ylabel("Total Impressions")
-        st.pyplot(plt.gcf())
+            with col1:
+                st.metric(label="Total Impressions", value=f"{metrics['Impressions']:,}")
+            with col2:
+                st.metric(label="Click-Through Rate", value=f"{metrics['CTR (%)']}%")
+            with col3:
+                st.metric(label="Conversions", value=f"{metrics['Conversions']:,}")
+            with col4:
+                st.metric(label="ROI", value=f"{metrics['ROI (x)']}x")
 
-        # Display Bar Chart for CTR
-        st.write("#### Click-Through Rate (CTR) by Channel")
-        ctrs = {channel: metrics["CTR (%)"] for channel, metrics in engagement_metrics.items()}
-        plt.bar(ctrs.keys(), ctrs.values())
-        plt.title("Click-Through Rate (CTR) by Channel")
-        plt.xlabel("Channel")
-        plt.ylabel("CTR (%)")
-        st.pyplot(plt.gcf())
-
+        # Add a note to explain ROI or other terms if needed
+        st.write("_Note: ROI (Return on Investment) is a ratio of revenue generated to campaign cost._")
