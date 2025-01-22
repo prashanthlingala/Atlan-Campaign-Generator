@@ -48,7 +48,7 @@ if st.sidebar.button("Add Persona"):
         st.sidebar.error("Please fill in all fields to create a persona.")
 
 # Main App
-st.title("AI-Powered Campaign Creation Tool")
+st.title("Smart Personalized Automation for Remarkable Campaigns (S.P.A.R.C)")
 
 # Step 1: Select Persona
 st.header("1. Select a Persona")
